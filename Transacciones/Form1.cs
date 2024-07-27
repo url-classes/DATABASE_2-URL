@@ -28,7 +28,7 @@ namespace Transacciones
                     string getNextIdQuery = "SELECT IFNULL(MAX(idTelefono), 0) + 1 FROM Telefonos";
                     MySqlCommand getNextIdCmd = new MySqlCommand(getNextIdQuery, connection, transaction);
                     int nextIdTelefono = Convert.ToInt32(getNextIdCmd.ExecuteScalar());
-    
+
                     string insertTelefonoQuery = "INSERT INTO Telefonos (idTelefono, Telefono) VALUES (@idTelefono, @Telefono)";
                     MySqlCommand insertTelefonoCmd = new MySqlCommand(insertTelefonoQuery, connection, transaction);
                     insertTelefonoCmd.Parameters.AddWithValue("@idTelefono", nextIdTelefono);
@@ -65,7 +65,7 @@ namespace Transacciones
                 connection.Open();
                 transaction = connection.BeginTransaction();
                 isTransactionActive = true;
-               guardar.Enabled = true;
+                guardar.Enabled = true;
                 MessageBox.Show("Transacción iniciada.");
             }
             catch (Exception ex)
@@ -140,7 +140,7 @@ namespace Transacciones
         {
             try
             {
-                string query = "SELECT * FROM Clientes";
+                string query = "SELECT c.id, c.Nombre, c.Apellido, c.Direccion, t.Telefono FROM clientes c inner join telefonos t  on c.idTelefono = t.idTelefono;";
                 MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
@@ -155,6 +155,52 @@ namespace Transacciones
         private void buttonClear_Click(object sender, EventArgs e)
         {
             ClearTextBoxes();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            dataGridView1.CellClick += new DataGridViewCellEventHandler(dataGridView1_CellClick);
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                textBox1.Text = row.Cells["Nombre"].Value.ToString();
+                textBox2.Text = row.Cells["Apellido"].Value.ToString();
+                textBox3.Text = row.Cells["Direccion"].Value.ToString();
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ClearTextBoxes();
+        }
+
+        private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsNumber(e.KeyChar))
+            {
+                if (textBox4.Text.Length < 8)
+                {
+                    e.Handled = false;
+                }
+                else
+                {
+                    e.Handled = true;
+                    MessageBox.Show("¡Solo se permiten 8 dígitos!", "Advertencia", MessageBoxButtons.OK);
+                }
+            }
+            else if (char.IsControl(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+                MessageBox.Show("¡Ingrese solo números!", "Advertencia", MessageBoxButtons.OK);
+            }
         }
     }
 }

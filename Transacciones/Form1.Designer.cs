@@ -44,7 +44,8 @@
             label4 = new Label();
             label5 = new Label();
             label6 = new Label();
-            button1 = new Button();
+            button2 = new Button();
+            label7 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -110,8 +111,9 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(585, 598);
+            dataGridView1.Size = new Size(647, 598);
             dataGridView1.TabIndex = 4;
+            dataGridView1.CellClick += dataGridView1_CellClick;
             // 
             // textBox1
             // 
@@ -144,6 +146,7 @@
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(489, 38);
             textBox4.TabIndex = 8;
+            textBox4.KeyPress += textBox4_KeyPress;
             // 
             // label1
             // 
@@ -159,7 +162,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Comic Sans MS", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(676, 66);
+            label2.Location = new Point(750, 67);
             label2.Name = "label2";
             label2.Size = new Size(451, 31);
             label2.TabIndex = 10;
@@ -205,25 +208,36 @@
             label6.TabIndex = 14;
             label6.Text = "Ingrese el telefóno del cliente:";
             // 
-            // button1
+            // button2
             // 
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Comic Sans MS", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button1.Location = new Point(348, 461);
-            button1.Name = "button1";
-            button1.Size = new Size(127, 109);
-            button1.TabIndex = 15;
-            button1.Text = "Limpiar";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click_1;
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.Font = new Font("Comic Sans MS", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button2.Location = new Point(374, 462);
+            button2.Name = "button2";
+            button2.Size = new Size(127, 109);
+            button2.TabIndex = 16;
+            button2.Text = "Limpiar Campos";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Comic Sans MS", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label7.Location = new Point(629, 723);
+            label7.Name = "label7";
+            label7.Size = new Size(457, 48);
+            label7.TabIndex = 17;
+            label7.Text = "Nota: Seleccione un dato de la tabla para autorellenar \r\nlos campos de Nombre, Apellido y Dirección.";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.AntiqueWhite;
-            ClientSize = new Size(1226, 753);
-            Controls.Add(button1);
+            ClientSize = new Size(1288, 780);
+            Controls.Add(label7);
+            Controls.Add(button2);
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(label4);
@@ -239,10 +253,12 @@
             Controls.Add(committ);
             Controls.Add(transaccionn);
             Controls.Add(guardar);
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MODULO CLIENTES";
+            Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -265,6 +281,7 @@
         private Label label4;
         private Label label5;
         private Label label6;
-        private Button button1;
+        private Button button2;
+        private Label label7;
     }
 }
