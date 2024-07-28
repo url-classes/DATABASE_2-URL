@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DataBase2\\DATABASE_2-URL\\Transacciones\\Transacciones.csproj": {}
+    "C:\\Users\\luist\\OneDrive\\Escritorio\\2do semestre 2024\\Base de Datos II\\Nueva carpeta\\DATABASE_2-URL\\Transacciones\\Transacciones.csproj": {}
   },
   "projects": {
-    "D:\\DataBase2\\DATABASE_2-URL\\Transacciones\\Transacciones.csproj": {
+    "C:\\Users\\luist\\OneDrive\\Escritorio\\2do semestre 2024\\Base de Datos II\\Nueva carpeta\\DATABASE_2-URL\\Transacciones\\Transacciones.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DataBase2\\DATABASE_2-URL\\Transacciones\\Transacciones.csproj",
+        "projectUniqueName": "C:\\Users\\luist\\OneDrive\\Escritorio\\2do semestre 2024\\Base de Datos II\\Nueva carpeta\\DATABASE_2-URL\\Transacciones\\Transacciones.csproj",
         "projectName": "Transacciones",
-        "projectPath": "D:\\DataBase2\\DATABASE_2-URL\\Transacciones\\Transacciones.csproj",
-        "packagesPath": "C:\\Users\\pc hp\\.nuget\\packages\\",
-        "outputPath": "D:\\DataBase2\\DATABASE_2-URL\\Transacciones\\obj\\",
+        "projectPath": "C:\\Users\\luist\\OneDrive\\Escritorio\\2do semestre 2024\\Base de Datos II\\Nueva carpeta\\DATABASE_2-URL\\Transacciones\\Transacciones.csproj",
+        "packagesPath": "C:\\Users\\luist\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\luist\\OneDrive\\Escritorio\\2do semestre 2024\\Base de Datos II\\Nueva carpeta\\DATABASE_2-URL\\Transacciones\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\pc hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\luist\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -77,7 +77,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

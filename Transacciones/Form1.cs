@@ -11,10 +11,12 @@ namespace Transacciones
         private MySqlTransaction transaction;
         private bool isTransactionActive = false;
 
+        public string TelAct { get; private set; }
+
         public Form1()
         {
             InitializeComponent();
-            connection = new MySqlConnection("server=localhost;database=transacciones;user=root;password=holamundo123;");
+            connection = new MySqlConnection("server=localhost;database=transacciones;user=root;password=root123;");
             guardar.Enabled = false;
             RefreshDataGridView();
         }
@@ -170,6 +172,8 @@ namespace Transacciones
                 textBox1.Text = row.Cells["Nombre"].Value.ToString();
                 textBox2.Text = row.Cells["Apellido"].Value.ToString();
                 textBox3.Text = row.Cells["Direccion"].Value.ToString();
+                textBox4.Text = row.Cells["Telefono"].Value.ToString();
+                TelAct = textBox4.Text;
             }
         }
 
@@ -201,6 +205,21 @@ namespace Transacciones
                 e.Handled = true;
                 MessageBox.Show("¡Ingrese solo números!", "Advertencia", MessageBoxButtons.OK);
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string tel = textBox4.Text;
+
+            if (tel == TelAct)
+            {
+                MessageBox.Show("el numero de telefono no se actualizo");
+            }
+            else
+            {
+                // logica para actualizar o insertar nuevo numero
+            }
+
         }
     }
 }
