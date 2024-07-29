@@ -14,6 +14,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Transacciones
-build_property.ProjectDir = C:\Users\luist\OneDrive\Escritorio\2do semestre 2024\Base de Datos II\Nueva carpeta\DATABASE_2-URL\Transacciones\
+build_property.ProjectDir = D:\DataBase2\DATABASE_2-URL\Transacciones\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

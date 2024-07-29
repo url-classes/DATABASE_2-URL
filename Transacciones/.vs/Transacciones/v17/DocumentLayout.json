@@ -1,14 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\luist\\OneDrive\\Escritorio\\2do semestre 2024\\Base de Datos II\\Nueva carpeta\\DATABASE_2-URL\\Transacciones\\",
+  "WorkspaceRootPath": "D:\\DataBase2\\DATABASE_2-URL\\Transacciones\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E735F478-9ED0-499E-B730-5CB0C725F209}|Transacciones.csproj|c:\\users\\luist\\onedrive\\escritorio\\2do semestre 2024\\base de datos ii\\nueva carpeta\\database_2-url\\transacciones\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E735F478-9ED0-499E-B730-5CB0C725F209}|Transacciones.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E735F478-9ED0-499E-B730-5CB0C725F209}|Transacciones.csproj|D:\\DataBase2\\DATABASE_2-URL\\Transacciones\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{E735F478-9ED0-499E-B730-5CB0C725F209}|Transacciones.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E735F478-9ED0-499E-B730-5CB0C725F209}|Transacciones.csproj|c:\\users\\luist\\onedrive\\escritorio\\2do semestre 2024\\base de datos ii\\nueva carpeta\\database_2-url\\transacciones\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{E735F478-9ED0-499E-B730-5CB0C725F209}|Transacciones.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{E735F478-9ED0-499E-B730-5CB0C725F209}|Transacciones.csproj|d:\\database2\\database_2-url\\transacciones\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E735F478-9ED0-499E-B730-5CB0C725F209}|Transacciones.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 214,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,11 +26,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Form1.cs [Dise\u00F1o]",
-              "DocumentMoniker": "C:\\Users\\luist\\OneDrive\\Escritorio\\2do semestre 2024\\Base de Datos II\\Nueva carpeta\\DATABASE_2-URL\\Transacciones\\Form1.cs",
+              "DocumentMoniker": "D:\\DataBase2\\DATABASE_2-URL\\Transacciones\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "C:\\Users\\luist\\OneDrive\\Escritorio\\2do semestre 2024\\Base de Datos II\\Nueva carpeta\\DATABASE_2-URL\\Transacciones\\Form1.cs [Dise\u00F1o]",
+              "ToolTip": "D:\\DataBase2\\DATABASE_2-URL\\Transacciones\\Form1.cs [Dise\u00F1o]",
               "RelativeToolTip": "Form1.cs [Dise\u00F1o]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-25T22:26:51.039Z",
@@ -38,13 +38,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Form1.cs",
-              "DocumentMoniker": "C:\\Users\\luist\\OneDrive\\Escritorio\\2do semestre 2024\\Base de Datos II\\Nueva carpeta\\DATABASE_2-URL\\Transacciones\\Form1.cs",
+              "DocumentMoniker": "D:\\DataBase2\\DATABASE_2-URL\\Transacciones\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "C:\\Users\\luist\\OneDrive\\Escritorio\\2do semestre 2024\\Base de Datos II\\Nueva carpeta\\DATABASE_2-URL\\Transacciones\\Form1.cs",
+              "ToolTip": "D:\\DataBase2\\DATABASE_2-URL\\Transacciones\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AQIAAGwAAAAAAAAAAAAQwOEAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAMoAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-25T01:48:36.375Z",
               "EditorCaption": ""
