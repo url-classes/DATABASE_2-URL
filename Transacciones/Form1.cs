@@ -14,35 +14,71 @@ namespace Transacciones
         public Form1()
         {
             InitializeComponent();
-            connection = new MySqlConnection("server=localhost;database=transacciones;user=root;password=holamundo123;");
+            connection = new MySqlConnection("server=localhost;database=transacciones2;user=root;password=holamundo123;");
             guardar.Enabled = false;
             RefreshDataGridView();
+            MostrarNivelAislamientoActual();
         }
+        private void MostrarNivelAislamientoActual()
+        {
+            try
+            {
+                connection.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT @@transaction_isolation;", connection);
+                string nivelAislamiento = cmd.ExecuteScalar().ToString();
 
+                switch (nivelAislamiento.ToUpper())
+                {
+                    case "READ-UNCOMMITTED":
+                        label9.Text = "Nivel de aislamiento actual: Lecturas no comprometidas";
+                        break;
+                    case "READ-COMMITTED":
+                        label9.Text = "Nivel de aislamiento actual: Lecturas comprometidas";
+                        break;
+                    case "REPEATABLE-READ":
+                        label9.Text = "Nivel de aislamiento actual: Lecturas repetibles";
+                        break;
+                    case "SERIALIZABLE":
+                        label9.Text = "Nivel de aislamiento actual: Serializable";
+                        break;
+                    default:
+                        label9.Text = "Nivel de aislamiento actual: Desconocido";
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener el nivel de aislamiento: " + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
         private void button1_Click_1(object sender, EventArgs e)
         {
             if (isTransactionActive)
             {
                 try
                 {
-                    string getNextIdQuery = "SELECT IFNULL(MAX(idTelefono), 0) + 1 FROM Telefonos";
-                    MySqlCommand getNextIdCmd = new MySqlCommand(getNextIdQuery, connection, transaction);
-                    int nextIdTelefono = Convert.ToInt32(getNextIdCmd.ExecuteScalar());
+                    // Insertar el cliente primero
+                    string insertClientQuery = "INSERT INTO Clientes (Nombre, Apellido, Direccion) VALUES (@Nombre, @Apellido, @Direccion)";
+                    MySqlCommand insertClientCmd = new MySqlCommand(insertClientQuery, connection, transaction);
+                    insertClientCmd.Parameters.AddWithValue("@Nombre", textBox1.Text);
+                    insertClientCmd.Parameters.AddWithValue("@Apellido", textBox2.Text);
+                    insertClientCmd.Parameters.AddWithValue("@Direccion", textBox3.Text);
+                    insertClientCmd.ExecuteNonQuery();
 
-                    string insertTelefonoQuery = "INSERT INTO Telefonos (idTelefono, Telefono) VALUES (@idTelefono, @Telefono)";
-                    MySqlCommand insertTelefonoCmd = new MySqlCommand(insertTelefonoQuery, connection, transaction);
-                    insertTelefonoCmd.Parameters.AddWithValue("@idTelefono", nextIdTelefono);
-                    insertTelefonoCmd.Parameters.AddWithValue("@Telefono", textBox4.Text);
-                    insertTelefonoCmd.ExecuteNonQuery();
+                    // Obtener el id del cliente insertado
+                    int clientId = (int)insertClientCmd.LastInsertedId;
 
-                    string query = "INSERT INTO Clientes (Nombre, Apellido, Direccion, idTelefono) VALUES (@Nombre, @Apellido, @Direccion, @idTelefono)";
-                    MySqlCommand cmd = new MySqlCommand(query, connection, transaction);
-                    cmd.Parameters.AddWithValue("@Nombre", textBox1.Text);
-                    cmd.Parameters.AddWithValue("@Apellido", textBox2.Text);
-                    cmd.Parameters.AddWithValue("@Direccion", textBox3.Text);
-                    cmd.Parameters.AddWithValue("@idTelefono", nextIdTelefono);
+                    // Insertar el teléfono
+                    string insertPhoneQuery = "INSERT INTO Telefonos (Telefono, Clientes_id) VALUES (@Telefono, @Clientes_id)";
+                    MySqlCommand insertPhoneCmd = new MySqlCommand(insertPhoneQuery, connection, transaction);
+                    insertPhoneCmd.Parameters.AddWithValue("@Telefono", textBox4.Text);
+                    insertPhoneCmd.Parameters.AddWithValue("@Clientes_id", clientId);
+                    insertPhoneCmd.ExecuteNonQuery();
 
-                    cmd.ExecuteNonQuery();
                     MessageBox.Show("Datos guardados correctamente.");
                     ClearTextBoxes();
                     RefreshDataGridView();
@@ -62,10 +98,12 @@ namespace Transacciones
         {
             try
             {
+                IsolationLevel isolationLevel = GetIsolationLevel();
                 connection.Open();
                 transaction = connection.BeginTransaction();
                 isTransactionActive = true;
                 guardar.Enabled = true;
+                label9.Text = "Nivel de aislamiento: " + comboBox1.SelectedItem.ToString();
                 MessageBox.Show("Transacción iniciada.");
             }
             catch (Exception ex)
@@ -134,13 +172,16 @@ namespace Transacciones
             textBox2.Clear();
             textBox3.Clear();
             textBox4.Clear();
+            textBox1.Enabled = true;
+            textBox2.Enabled = true;
+            textBox3.Enabled = true;
         }
 
         private void RefreshDataGridView()
         {
             try
             {
-                string query = "SELECT c.id, c.Nombre, c.Apellido, c.Direccion, t.Telefono FROM clientes c inner join telefonos t  on c.idTelefono = t.idTelefono;";
+                string query = "SELECT c.id, c.Nombre, c.Apellido, c.Direccion, t.Telefono FROM Clientes c LEFT JOIN Telefonos t ON c.id = t.Clientes_id;";
                 MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
@@ -170,6 +211,10 @@ namespace Transacciones
                 textBox1.Text = row.Cells["Nombre"].Value.ToString();
                 textBox2.Text = row.Cells["Apellido"].Value.ToString();
                 textBox3.Text = row.Cells["Direccion"].Value.ToString();
+                textBox1.Tag = row.Cells["id"].Value.ToString(); // Guardar el ID del cliente en el Tag del TextBox
+                textBox1.Enabled = false;
+                textBox2.Enabled = false;
+                textBox3.Enabled = false;
             }
         }
 
@@ -201,6 +246,65 @@ namespace Transacciones
                 e.Handled = true;
                 MessageBox.Show("¡Ingrese solo números!", "Advertencia", MessageBoxButtons.OK);
             }
+        }
+
+        private void agregartelefono_Click(object sender, EventArgs e)
+        {
+            if (isTransactionActive)
+            {
+                if (!string.IsNullOrEmpty(textBox4.Text))
+                {
+                    try
+                    {
+                        // Obtener el ID del cliente del TextBox1.Tag
+                        int clientId = int.Parse(textBox1.Tag.ToString());
+
+                        // Insertar el teléfono
+                        string insertPhoneQuery = "INSERT INTO Telefonos (Telefono, Clientes_id) VALUES (@Telefono, @Clientes_id)";
+                        MySqlCommand insertPhoneCmd = new MySqlCommand(insertPhoneQuery, connection, transaction);
+                        insertPhoneCmd.Parameters.AddWithValue("@Telefono", textBox4.Text);
+                        insertPhoneCmd.Parameters.AddWithValue("@Clientes_id", clientId);
+                        insertPhoneCmd.ExecuteNonQuery();
+
+                        MessageBox.Show("Teléfono agregado correctamente.");
+                        textBox4.Clear();
+                        RefreshDataGridView();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al agregar teléfono: " + ex.Message);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Por favor, ingrese un número de teléfono.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Inicie una transacción primero.");
+            }
+        }
+        private IsolationLevel GetIsolationLevel()
+        {
+            switch (comboBox1.SelectedItem.ToString())
+            {
+                case "Lecturas no comprometidas":
+                    return IsolationLevel.ReadUncommitted;
+                case "Lecturas comprometidas":
+                    return IsolationLevel.ReadCommitted;
+                case "Lecturas repetibles":
+                    return IsolationLevel.RepeatableRead;
+                case "Serializable":
+                    return IsolationLevel.Serializable;
+                default:
+                    return IsolationLevel.RepeatableRead;
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            label9.Text = "Nivel de aislamiento: " + comboBox1.SelectedItem.ToString();
         }
     }
 }
