@@ -5,34 +5,27 @@ using System.Windows.Forms;
 
 namespace Transacciones
 {
-    public partial class Form1 : Form
+    public partial class Ventana2 : Form
     {
         private MySqlConnection connection;
         private MySqlTransaction transaction;
         private bool isTransactionActive = false;
         public event Action OnDataChanged;
-        private Ventana2 form2;
 
-
-        public Form1()
+        public Ventana2()
         {
             InitializeComponent();
             connection = new MySqlConnection("server=localhost;database=transacciones2;user=root;password=holamundo123;");
-
             guardar.Enabled = false;
-            form2 = new Ventana2();
-            form2.Show();
-            form2.OnDataChanged += RefreshDataGridView;
-            OnDataChanged += form2.RefreshDataGridView;
             RefreshDataGridView();
             MostrarNivelAislamientoActual();
-            
+
+
         }
         private void NotifyDataChanged()
         {
             OnDataChanged?.Invoke();
         }
-
         private void MostrarNivelAislamientoActual()
         {
             try
@@ -92,11 +85,11 @@ namespace Transacciones
                     insertPhoneCmd.Parameters.AddWithValue("@Telefono", textBox4.Text);
                     insertPhoneCmd.Parameters.AddWithValue("@Clientes_id", clientId);
                     insertPhoneCmd.ExecuteNonQuery();
-                    NotifyDataChanged();
+
                     MessageBox.Show("Datos guardados correctamente.");
                     ClearTextBoxes();
                     RefreshDataGridView();
-                   
+                    NotifyDataChanged();
                 }
                 catch (Exception ex)
                 {
@@ -114,15 +107,19 @@ namespace Transacciones
             try
             {
                 IsolationLevel isolationLevel = GetIsolationLevel();
+
+                // Abrir la conexión
                 connection.Open();
+
+                // Establecer el nivel de aislamiento para la sesión
                 MySqlCommand setIsolationLevelCmd = new MySqlCommand($"SET SESSION TRANSACTION ISOLATION LEVEL {GetIsolationLevelAsString(isolationLevel)};", connection);
                 setIsolationLevelCmd.ExecuteNonQuery();
 
+                // Iniciar la transacción con el nivel de aislamiento especificado
                 transaction = connection.BeginTransaction(isolationLevel);
                 isTransactionActive = true;
                 guardar.Enabled = true;
                 label9.Text = "Nivel de aislamiento: " + comboBox1.SelectedItem.ToString();
-                NotifyDataChanged();
                 MessageBox.Show("Transacción iniciada.");
             }
             catch (Exception ex)
@@ -140,10 +137,9 @@ namespace Transacciones
                     transaction.Commit();
                     isTransactionActive = false;
                     guardar.Enabled = false;
-                    NotifyDataChanged();
                     MessageBox.Show("Transacción confirmada.");
                     RefreshDataGridView();
-                   
+                    NotifyDataChanged();
                 }
                 catch (Exception ex)
                 {
@@ -169,10 +165,9 @@ namespace Transacciones
                     transaction.Rollback();
                     isTransactionActive = false;
                     guardar.Enabled = false;
-                    NotifyDataChanged();
                     MessageBox.Show("Transacción revertida.");
                     RefreshDataGridView();
-                    
+                    NotifyDataChanged();
                 }
                 catch (Exception ex)
                 {
@@ -206,7 +201,6 @@ namespace Transacciones
             {
                 string query = "SELECT c.id, c.Nombre, c.Apellido, c.Direccion, t.Telefono FROM Clientes c LEFT JOIN Telefonos t ON c.id = t.Clientes_id;";
                 MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
-                adapter.SelectCommand.Transaction = transaction;
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
                 dataGridView1.DataSource = dataTable;
@@ -289,11 +283,11 @@ namespace Transacciones
                         insertPhoneCmd.Parameters.AddWithValue("@Telefono", textBox4.Text);
                         insertPhoneCmd.Parameters.AddWithValue("@Clientes_id", clientId);
                         insertPhoneCmd.ExecuteNonQuery();
-                        NotifyDataChanged();
+
                         MessageBox.Show("Teléfono agregado correctamente.");
                         textBox4.Clear();
                         RefreshDataGridView();
-                        
+                        NotifyDataChanged();
                     }
                     catch (Exception ex)
                     {
@@ -315,7 +309,6 @@ namespace Transacciones
             switch (comboBox1.SelectedItem.ToString())
             {
                 case "Lecturas no comprometidas":
-                    
                     return IsolationLevel.ReadUncommitted;
                 case "Lecturas comprometidas":
                     return IsolationLevel.ReadCommitted;
@@ -349,9 +342,9 @@ namespace Transacciones
             label9.Text = "Nivel de aislamiento: " + comboBox1.SelectedItem.ToString();
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-
+            RefreshDataGridView();
         }
     }
 }

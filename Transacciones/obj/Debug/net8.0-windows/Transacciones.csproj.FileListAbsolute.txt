@@ -33,3 +33,4 @@ D:\DataBase2\DATABASE_2-URL\Transacciones\obj\Debug\net8.0-windows\refint\Transa
 D:\DataBase2\DATABASE_2-URL\Transacciones\obj\Debug\net8.0-windows\Transacciones.pdb
 D:\DataBase2\DATABASE_2-URL\Transacciones\obj\Debug\net8.0-windows\Transacciones.genruntimeconfig.cache
 D:\DataBase2\DATABASE_2-URL\Transacciones\obj\Debug\net8.0-windows\ref\Transacciones.dll
+D:\DataBase2\DATABASE_2-URL\Transacciones\obj\Debug\net8.0-windows\Transacciones.Ventana2.resources

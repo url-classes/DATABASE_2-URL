@@ -1,6 +1,6 @@
 ﻿namespace Transacciones
 {
-    partial class Form1
+    partial class Ventana2
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ventana2));
             guardar = new Button();
             transaccionn = new Button();
             committ = new Button();
@@ -50,6 +50,7 @@
             comboBox1 = new ComboBox();
             label8 = new Label();
             label9 = new Label();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -118,7 +119,6 @@
             dataGridView1.Size = new Size(647, 598);
             dataGridView1.TabIndex = 4;
             dataGridView1.CellClick += dataGridView1_CellClick;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // textBox1
             // 
@@ -277,12 +277,23 @@
             label9.Size = new Size(0, 28);
             label9.TabIndex = 21;
             // 
-            // Form1
+            // button1
+            // 
+            button1.Location = new Point(763, 39);
+            button1.Name = "button1";
+            button1.Size = new Size(94, 29);
+            button1.TabIndex = 22;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // Ventana2
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.AntiqueWhite;
             ClientSize = new Size(1288, 903);
+            Controls.Add(button1);
             Controls.Add(label9);
             Controls.Add(label8);
             Controls.Add(comboBox1);
@@ -306,9 +317,9 @@
             Controls.Add(guardar);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "Form1";
+            Name = "Ventana2";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "VENTANA 1";
+            Text = "VENTANA 2";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
@@ -338,5 +349,6 @@
         private ComboBox comboBox1;
         private Label label8;
         private Label label9;
+        private Button button1;
     }
 }
