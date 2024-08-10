@@ -14,9 +14,46 @@ namespace Transacciones
         public Form1()
         {
             InitializeComponent();
-            connection = new MySqlConnection("server=localhost;database=transacciones;user=root;password=holamundo123;");
+            connection = new MySqlConnection("server=localhost;database=transacciones2;user=root;password=holamundo123;");
             guardar.Enabled = false;
             RefreshDataGridView();
+            MostrarNivelAislamientoActual();
+        }
+        private void MostrarNivelAislamientoActual()
+        {
+            try
+            {
+                connection.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT @@transaction_isolation;", connection);
+                string nivelAislamiento = cmd.ExecuteScalar().ToString();
+
+                switch (nivelAislamiento.ToUpper())
+                {
+                    case "READ-UNCOMMITTED":
+                        label10.Text = "Nivel de aislamiento actual: Lecturas no comprometidas";
+                        break;
+                    case "READ-COMMITTED":
+                        label10.Text = "Nivel de aislamiento actual: Lecturas comprometidas";
+                        break;
+                    case "REPEATABLE-READ":
+                        label10.Text = "Nivel de aislamiento actual: Lecturas repetibles";
+                        break;
+                    case "SERIALIZABLE":
+                        label10.Text = "Nivel de aislamiento actual: Serializable";
+                        break;
+                    default:
+                        label10.Text = "Nivel de aislamiento actual: Desconocido";
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener el nivel de aislamiento: " + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -62,10 +99,13 @@ namespace Transacciones
         {
             try
             {
+                IsolationLevel isolationLevel = GetIsolationLevel();
                 connection.Open();
-                transaction = connection.BeginTransaction();
+                transaction = connection.BeginTransaction(isolationLevel);
                 isTransactionActive = true;
                 guardar.Enabled = true;
+                label10.Text = "Nivel de aislamiento: " + comboBox1.SelectedItem.ToString();
+
                 MessageBox.Show("Transacción iniciada.");
             }
             catch (Exception ex)
@@ -200,6 +240,27 @@ namespace Transacciones
             {
                 e.Handled = true;
                 MessageBox.Show("¡Ingrese solo números!", "Advertencia", MessageBoxButtons.OK);
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            label10.Text = "Nivel de aislamiento: " + comboBox1.SelectedItem.ToString();
+        }
+        private IsolationLevel GetIsolationLevel()
+        {
+            switch (comboBox1.SelectedItem.ToString())
+            {
+                case "Lecturas no comprometidas":
+                    return IsolationLevel.ReadUncommitted;
+                case "Lecturas comprometidas":
+                    return IsolationLevel.ReadCommitted;
+                case "Lecturas repetibles":
+                    return IsolationLevel.RepeatableRead;
+                case "Serializable":
+                    return IsolationLevel.Serializable;
+                default:
+                    return IsolationLevel.RepeatableRead;
             }
         }
     }

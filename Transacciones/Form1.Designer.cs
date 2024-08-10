@@ -46,6 +46,9 @@
             label6 = new Label();
             button2 = new Button();
             label7 = new Label();
+            label8 = new Label();
+            comboBox1 = new ComboBox();
+            label10 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -56,7 +59,7 @@
             guardar.FlatStyle = FlatStyle.Flat;
             guardar.Font = new Font("Comic Sans MS", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             guardar.Image = Properties.Resources.save_i;
-            guardar.Location = new Point(139, 461);
+            guardar.Location = new Point(141, 581);
             guardar.Name = "guardar";
             guardar.Size = new Size(123, 109);
             guardar.TabIndex = 0;
@@ -68,7 +71,7 @@
             transaccionn.BackColor = Color.Goldenrod;
             transaccionn.FlatStyle = FlatStyle.Flat;
             transaccionn.Font = new Font("Comic Sans MS", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            transaccionn.Location = new Point(75, 629);
+            transaccionn.Location = new Point(77, 749);
             transaccionn.Name = "transaccionn";
             transaccionn.Size = new Size(155, 84);
             transaccionn.TabIndex = 1;
@@ -81,7 +84,7 @@
             committ.BackColor = Color.Goldenrod;
             committ.FlatStyle = FlatStyle.Flat;
             committ.Font = new Font("Comic Sans MS", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            committ.Location = new Point(279, 629);
+            committ.Location = new Point(281, 749);
             committ.Name = "committ";
             committ.Size = new Size(112, 84);
             committ.TabIndex = 2;
@@ -94,7 +97,7 @@
             rollbackk.BackColor = Color.Goldenrod;
             rollbackk.FlatStyle = FlatStyle.Flat;
             rollbackk.Font = new Font("Comic Sans MS", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            rollbackk.Location = new Point(450, 629);
+            rollbackk.Location = new Point(452, 749);
             rollbackk.Name = "rollbackk";
             rollbackk.Size = new Size(114, 84);
             rollbackk.TabIndex = 3;
@@ -107,7 +110,7 @@
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(629, 115);
+            dataGridView1.Location = new Point(631, 235);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
@@ -118,7 +121,7 @@
             // textBox1
             // 
             textBox1.Font = new Font("Comic Sans MS", 13.2000008F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(75, 140);
+            textBox1.Location = new Point(77, 260);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(489, 38);
             textBox1.TabIndex = 5;
@@ -126,7 +129,7 @@
             // textBox2
             // 
             textBox2.Font = new Font("Comic Sans MS", 13.2000008F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox2.Location = new Point(75, 229);
+            textBox2.Location = new Point(77, 349);
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(489, 38);
             textBox2.TabIndex = 6;
@@ -134,7 +137,7 @@
             // textBox3
             // 
             textBox3.Font = new Font("Comic Sans MS", 13.2000008F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox3.Location = new Point(75, 320);
+            textBox3.Location = new Point(77, 440);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(489, 38);
             textBox3.TabIndex = 7;
@@ -142,7 +145,7 @@
             // textBox4
             // 
             textBox4.Font = new Font("Comic Sans MS", 13.2000008F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox4.Location = new Point(75, 406);
+            textBox4.Location = new Point(77, 526);
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(489, 38);
             textBox4.TabIndex = 8;
@@ -152,7 +155,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Comic Sans MS", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(139, 49);
+            label1.Location = new Point(141, 169);
             label1.Name = "label1";
             label1.Size = new Size(276, 31);
             label1.TabIndex = 9;
@@ -162,7 +165,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Comic Sans MS", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(750, 67);
+            label2.Location = new Point(752, 187);
             label2.Name = "label2";
             label2.Size = new Size(451, 31);
             label2.TabIndex = 10;
@@ -172,7 +175,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Comic Sans MS", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(78, 109);
+            label3.Location = new Point(80, 229);
             label3.Name = "label3";
             label3.Size = new Size(290, 28);
             label3.TabIndex = 11;
@@ -182,7 +185,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Comic Sans MS", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(78, 198);
+            label4.Location = new Point(80, 318);
             label4.Name = "label4";
             label4.Size = new Size(292, 28);
             label4.TabIndex = 12;
@@ -192,7 +195,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Comic Sans MS", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(78, 289);
+            label5.Location = new Point(80, 409);
             label5.Name = "label5";
             label5.Size = new Size(306, 28);
             label5.TabIndex = 13;
@@ -202,7 +205,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Comic Sans MS", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.Location = new Point(78, 375);
+            label6.Location = new Point(80, 495);
             label6.Name = "label6";
             label6.Size = new Size(298, 28);
             label6.TabIndex = 14;
@@ -212,7 +215,7 @@
             // 
             button2.FlatStyle = FlatStyle.Flat;
             button2.Font = new Font("Comic Sans MS", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button2.Location = new Point(374, 462);
+            button2.Location = new Point(376, 582);
             button2.Name = "button2";
             button2.Size = new Size(127, 109);
             button2.TabIndex = 16;
@@ -224,18 +227,51 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Comic Sans MS", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label7.Location = new Point(629, 723);
+            label7.Location = new Point(631, 843);
             label7.Name = "label7";
             label7.Size = new Size(457, 48);
             label7.TabIndex = 17;
             label7.Text = "Nota: Seleccione un dato de la tabla para autorellenar \r\nlos campos de Nombre, Apellido y Dirección.";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Comic Sans MS", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label8.Location = new Point(30, 43);
+            label8.Name = "label8";
+            label8.Size = new Size(428, 24);
+            label8.TabIndex = 18;
+            label8.Text = "Seleccione el nivel de aislamiento de la transacción:";
+            // 
+            // comboBox1
+            // 
+            comboBox1.Font = new Font("Comic Sans MS", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange(new object[] { "Lecturas no comprometidas", "Lecturas repetibles", "Lecturas comprometidas", "Serializable" });
+            comboBox1.Location = new Point(464, 37);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(272, 36);
+            comboBox1.TabIndex = 19;
+            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new Font("Comic Sans MS", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label10.Location = new Point(763, 37);
+            label10.Name = "label10";
+            label10.Size = new Size(0, 28);
+            label10.TabIndex = 21;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.AntiqueWhite;
-            ClientSize = new Size(1288, 780);
+            ClientSize = new Size(1288, 911);
+            Controls.Add(label10);
+            Controls.Add(comboBox1);
+            Controls.Add(label8);
             Controls.Add(label7);
             Controls.Add(button2);
             Controls.Add(label6);
@@ -283,5 +319,8 @@
         private Label label6;
         private Button button2;
         private Label label7;
+        private Label label8;
+        private ComboBox comboBox1;
+        private Label label10;
     }
 }
