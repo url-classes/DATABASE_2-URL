@@ -7,15 +7,15 @@ namespace Transacciones
 {
     public partial class Ventana2 : Form
     {
-        private MySqlConnection connection;
-        private MySqlTransaction transaction;
+        private MySqlConnection connection2;
+        private MySqlTransaction transaction2;
         private bool isTransactionActive = false;
         public event Action OnDataChanged;
 
         public Ventana2()
         {
             InitializeComponent();
-            connection = new MySqlConnection("server=localhost;database=transacciones2;user=root;password=holamundo123;");
+            connection2 = new MySqlConnection("server=localhost;database=transacciones2;user=root;password=holamundo123;");
             guardar.Enabled = false;
             RefreshDataGridView();
             MostrarNivelAislamientoActual();
@@ -30,8 +30,8 @@ namespace Transacciones
         {
             try
             {
-                connection.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT @@transaction_isolation;", connection);
+                connection2.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT @@transaction_isolation;", connection2);
                 string nivelAislamiento = cmd.ExecuteScalar().ToString();
 
                 switch (nivelAislamiento.ToUpper())
@@ -59,7 +59,7 @@ namespace Transacciones
             }
             finally
             {
-                connection.Close();
+                connection2.Close();
             }
         }
         private void button1_Click_1(object sender, EventArgs e)
@@ -68,9 +68,12 @@ namespace Transacciones
             {
                 try
                 {
-                   
+                    if (connection2.State == ConnectionState.Closed)
+                    {
+                        connection2.Open();
+                    }
                     string insertClientQuery = "INSERT INTO Clientes (Nombre, Apellido, Direccion) VALUES (@Nombre, @Apellido, @Direccion)";
-                    MySqlCommand insertClientCmd = new MySqlCommand(insertClientQuery, connection, transaction);
+                    MySqlCommand insertClientCmd = new MySqlCommand(insertClientQuery, connection2, transaction2);
                     insertClientCmd.Parameters.AddWithValue("@Nombre", textBox1.Text);
                     insertClientCmd.Parameters.AddWithValue("@Apellido", textBox2.Text);
                     insertClientCmd.Parameters.AddWithValue("@Direccion", textBox3.Text);
@@ -81,7 +84,7 @@ namespace Transacciones
 
         
                     string insertPhoneQuery = "INSERT INTO Telefonos (Telefono, Clientes_id) VALUES (@Telefono, @Clientes_id)";
-                    MySqlCommand insertPhoneCmd = new MySqlCommand(insertPhoneQuery, connection, transaction);
+                    MySqlCommand insertPhoneCmd = new MySqlCommand(insertPhoneQuery, connection2, transaction2);
                     insertPhoneCmd.Parameters.AddWithValue("@Telefono", textBox4.Text);
                     insertPhoneCmd.Parameters.AddWithValue("@Clientes_id", clientId);
                     insertPhoneCmd.ExecuteNonQuery();
@@ -102,12 +105,16 @@ namespace Transacciones
                     }
                     else
                     {
-                        MessageBox.Show("Error de MySQL: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Error de MySQL: " + "Hay una transacción activa !!!");
+                      
+
                     }
                 }
                 catch (InvalidOperationException ex)
                 {
-                    MessageBox.Show("Operación inválida: " + ex.Message, "Error de operación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    MessageBox.Show("Operación inválida: Hay una transacción Activa" );
+                  
                 }
                 catch (Exception ex)
                 {
@@ -125,11 +132,16 @@ namespace Transacciones
         {
             try
             {
+                if (comboBox1.SelectedItem == null)
+                {
+                    MessageBox.Show("Por favor, seleccione un nivel de aislamiento antes de iniciar la transacción.");
+                    return;
+                }
                 IsolationLevel isolationLevel = GetIsolationLevel();
-                connection.Open();
-                MySqlCommand setIsolationLevelCmd = new MySqlCommand($"SET SESSION TRANSACTION ISOLATION LEVEL {GetIsolationLevelAsString(isolationLevel)};", connection);
+                connection2.Open();
+                MySqlCommand setIsolationLevelCmd = new MySqlCommand($"SET SESSION TRANSACTION ISOLATION LEVEL {GetIsolationLevelAsString(isolationLevel)};", connection2);
                 setIsolationLevelCmd.ExecuteNonQuery();
-                transaction = connection.BeginTransaction(isolationLevel);
+                transaction2 = connection2.BeginTransaction(isolationLevel);
                 isTransactionActive = true;
                 guardar.Enabled = true;
                 label9.Text = "Nivel de aislamiento: " + comboBox1.SelectedItem.ToString();
@@ -147,7 +159,7 @@ namespace Transacciones
             {
                 try
                 {
-                    transaction.Commit();
+                    transaction2.Commit();
                     isTransactionActive = false;
                     guardar.Enabled = false;
                     MessageBox.Show("Transacción confirmada.");
@@ -160,7 +172,7 @@ namespace Transacciones
                 }
                 finally
                 {
-                    connection.Close();
+                    connection2.Close();
                 }
             }
             else
@@ -175,7 +187,7 @@ namespace Transacciones
             {
                 try
                 {
-                    transaction.Rollback();
+                    transaction2.Rollback();
                     isTransactionActive = false;
                     guardar.Enabled = false;
                     MessageBox.Show("Transacción revertida.");
@@ -188,7 +200,7 @@ namespace Transacciones
                 }
                 finally
                 {
-                    connection.Close();
+                    connection2.Close();
                 }
             }
             else
@@ -213,7 +225,7 @@ namespace Transacciones
             try
             {
                 string query = "SELECT c.id, c.Nombre, c.Apellido, c.Direccion, t.Telefono FROM Clientes c LEFT JOIN Telefonos t ON c.id = t.Clientes_id;";
-                MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection2);
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
                 dataGridView1.DataSource = dataTable;
@@ -242,7 +254,7 @@ namespace Transacciones
                 textBox1.Text = row.Cells["Nombre"].Value.ToString();
                 textBox2.Text = row.Cells["Apellido"].Value.ToString();
                 textBox3.Text = row.Cells["Direccion"].Value.ToString();
-                textBox1.Tag = row.Cells["id"].Value.ToString(); // Guardar el ID del cliente en el Tag del TextBox
+                textBox1.Tag = row.Cells["id"].Value.ToString(); 
                 textBox1.Enabled = false;
                 textBox2.Enabled = false;
                 textBox3.Enabled = false;
@@ -287,12 +299,15 @@ namespace Transacciones
                 {
                     try
                     {
-                        // Obtener el ID del cliente del TextBox1.Tag
+                        if (connection2.State == ConnectionState.Closed)
+                        {
+                            connection2.Open();
+                        }
+
                         int clientId = int.Parse(textBox1.Tag.ToString());
 
-                        // Insertar el teléfono
                         string insertPhoneQuery = "INSERT INTO Telefonos (Telefono, Clientes_id) VALUES (@Telefono, @Clientes_id)";
-                        MySqlCommand insertPhoneCmd = new MySqlCommand(insertPhoneQuery, connection, transaction);
+                        MySqlCommand insertPhoneCmd = new MySqlCommand(insertPhoneQuery, connection2, transaction2);
                         insertPhoneCmd.Parameters.AddWithValue("@Telefono", textBox4.Text);
                         insertPhoneCmd.Parameters.AddWithValue("@Clientes_id", clientId);
                         insertPhoneCmd.ExecuteNonQuery();
@@ -308,7 +323,7 @@ namespace Transacciones
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Error al agregar teléfono: " + ex.Message);
+                        MessageBox.Show("Error al agregar teléfono, hay una transacción activa!!!");
                     }
                 }
                 else
@@ -323,6 +338,12 @@ namespace Transacciones
         }
         private IsolationLevel GetIsolationLevel()
         {
+            if (comboBox1.SelectedItem == null)
+            {
+
+                return IsolationLevel.RepeatableRead;
+            }
+
             switch (comboBox1.SelectedItem.ToString())
             {
                 case "Lecturas no comprometidas":
@@ -334,6 +355,7 @@ namespace Transacciones
                 case "Serializable":
                     return IsolationLevel.Serializable;
                 default:
+
                     return IsolationLevel.RepeatableRead;
             }
         }

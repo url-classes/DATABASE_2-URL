@@ -75,7 +75,10 @@ namespace Transacciones
             {
                 try
                 {
-                    
+                    if (connection.State == ConnectionState.Closed)
+                    {
+                        connection.Open();
+                    }
                     string insertClientQuery = "INSERT INTO Clientes (Nombre, Apellido, Direccion) VALUES (@Nombre, @Apellido, @Direccion)";
                     MySqlCommand insertClientCmd = new MySqlCommand(insertClientQuery, connection, transaction);
                     insertClientCmd.Parameters.AddWithValue("@Nombre", textBox1.Text);
@@ -103,7 +106,7 @@ namespace Transacciones
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error al guardar datos, transacción activa: " + ex.Message);
+                    MessageBox.Show("Error al guardar datos, transacción activa!!!");
                 }
             }
             else
@@ -116,6 +119,11 @@ namespace Transacciones
         {
             try
             {
+                if (comboBox1.SelectedItem == null)
+                {
+                    MessageBox.Show("Por favor, seleccione un nivel de aislamiento antes de iniciar la transacción.");
+                    return; 
+                }
                 IsolationLevel isolationLevel = GetIsolationLevel();
                 connection.Open();
                 MySqlCommand setIsolationLevelCmd = new MySqlCommand($"SET SESSION TRANSACTION ISOLATION LEVEL {GetIsolationLevelAsString(isolationLevel)};", connection);
@@ -283,6 +291,10 @@ namespace Transacciones
                 {
                     try
                     {
+                        if (connection.State == ConnectionState.Closed)
+                        {
+                            connection.Open();
+                        }
                         int clientId = int.Parse(textBox1.Tag.ToString());
                         string insertPhoneQuery = "INSERT INTO Telefonos (Telefono, Clientes_id) VALUES (@Telefono, @Clientes_id)";
                         MySqlCommand insertPhoneCmd = new MySqlCommand(insertPhoneQuery, connection, transaction);
@@ -300,7 +312,7 @@ namespace Transacciones
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Error al agregar teléfono: " + ex.Message);
+                        MessageBox.Show("Error al agregar teléfono, hay una transacción activa!!!");
                     }
                 }
                 else
@@ -315,10 +327,15 @@ namespace Transacciones
         }
         private IsolationLevel GetIsolationLevel()
         {
+            if (comboBox1.SelectedItem == null)
+            {
+              
+                return IsolationLevel.RepeatableRead;
+            }
+
             switch (comboBox1.SelectedItem.ToString())
             {
                 case "Lecturas no comprometidas":
-                    
                     return IsolationLevel.ReadUncommitted;
                 case "Lecturas comprometidas":
                     return IsolationLevel.ReadCommitted;
@@ -327,6 +344,7 @@ namespace Transacciones
                 case "Serializable":
                     return IsolationLevel.Serializable;
                 default:
+                    
                     return IsolationLevel.RepeatableRead;
             }
         }

@@ -1735,7 +1735,8 @@
   "projectFileDependencyGroups": {
     "net8.0-windows7.0": [
       "MySql.Data >= 9.0.0",
-      "MySqlConnector >= 2.3.7"
+      "MySqlConnector >= 2.3.7",
+      "System.Threading.Tasks >= 4.3.0"
     ]
   },
   "packageFolders": {
@@ -1794,6 +1795,10 @@
           "MySqlConnector": {
             "target": "Package",
             "version": "[2.3.7, )"
+          },
+          "System.Threading.Tasks": {
+            "target": "Package",
+            "version": "[4.3.0, )"
           }
         },
         "imports": [

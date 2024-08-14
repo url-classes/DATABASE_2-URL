@@ -9,7 +9,8 @@
       "Transacciones/1.0.0": {
         "dependencies": {
           "MySql.Data": "9.0.0",
-          "MySqlConnector": "2.3.7"
+          "MySqlConnector": "2.3.7",
+          "System.Threading.Tasks": "4.3.0"
         },
         "runtime": {
           "Transacciones.dll": {}
