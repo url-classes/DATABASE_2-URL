@@ -68,7 +68,7 @@ namespace Transacciones
             {
                 try
                 {
-                    // Insertar el cliente primero
+                   
                     string insertClientQuery = "INSERT INTO Clientes (Nombre, Apellido, Direccion) VALUES (@Nombre, @Apellido, @Direccion)";
                     MySqlCommand insertClientCmd = new MySqlCommand(insertClientQuery, connection, transaction);
                     insertClientCmd.Parameters.AddWithValue("@Nombre", textBox1.Text);
@@ -76,25 +76,44 @@ namespace Transacciones
                     insertClientCmd.Parameters.AddWithValue("@Direccion", textBox3.Text);
                     insertClientCmd.ExecuteNonQuery();
 
-                    // Obtener el id del cliente insertado
+             
                     int clientId = (int)insertClientCmd.LastInsertedId;
 
-                    // Insertar el teléfono
+        
                     string insertPhoneQuery = "INSERT INTO Telefonos (Telefono, Clientes_id) VALUES (@Telefono, @Clientes_id)";
                     MySqlCommand insertPhoneCmd = new MySqlCommand(insertPhoneQuery, connection, transaction);
                     insertPhoneCmd.Parameters.AddWithValue("@Telefono", textBox4.Text);
                     insertPhoneCmd.Parameters.AddWithValue("@Clientes_id", clientId);
                     insertPhoneCmd.ExecuteNonQuery();
-
+                    
                     MessageBox.Show("Datos guardados correctamente.");
                     ClearTextBoxes();
                     RefreshDataGridView();
-                    NotifyDataChanged();
+                    if (GetIsolationLevel() != IsolationLevel.Serializable)
+                    {
+                        NotifyDataChanged();
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    if (ex.Number == 1213)
+                    {
+                        MessageBox.Show("Se ha producido un deadlock. Por favor, intente nuevamente.", "Deadlock", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error de MySQL: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (InvalidOperationException ex)
+                {
+                    MessageBox.Show("Operación inválida: " + ex.Message, "Error de operación", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error al guardar datos: " + ex.Message);
+                    MessageBox.Show("Error al guardar datos: " + ex.Message, "Error desconocido", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+               
             }
             else
             {
@@ -107,15 +126,9 @@ namespace Transacciones
             try
             {
                 IsolationLevel isolationLevel = GetIsolationLevel();
-
-                // Abrir la conexión
                 connection.Open();
-
-                // Establecer el nivel de aislamiento para la sesión
                 MySqlCommand setIsolationLevelCmd = new MySqlCommand($"SET SESSION TRANSACTION ISOLATION LEVEL {GetIsolationLevelAsString(isolationLevel)};", connection);
                 setIsolationLevelCmd.ExecuteNonQuery();
-
-                // Iniciar la transacción con el nivel de aislamiento especificado
                 transaction = connection.BeginTransaction(isolationLevel);
                 isTransactionActive = true;
                 guardar.Enabled = true;
@@ -283,11 +296,15 @@ namespace Transacciones
                         insertPhoneCmd.Parameters.AddWithValue("@Telefono", textBox4.Text);
                         insertPhoneCmd.Parameters.AddWithValue("@Clientes_id", clientId);
                         insertPhoneCmd.ExecuteNonQuery();
-
+                        
                         MessageBox.Show("Teléfono agregado correctamente.");
                         textBox4.Clear();
                         RefreshDataGridView();
-                        NotifyDataChanged();
+                        if (GetIsolationLevel() != IsolationLevel.Serializable)
+                        {
+                            NotifyDataChanged();
+                        }
+
                     }
                     catch (Exception ex)
                     {
@@ -333,18 +350,15 @@ namespace Transacciones
                 case IsolationLevel.Serializable:
                     return "SERIALIZABLE";
                 default:
-                    return "REPEATABLE READ"; // Valor por defecto
+                    return "REPEATABLE READ"; 
             }
         }
-
+       
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             label9.Text = "Nivel de aislamiento: " + comboBox1.SelectedItem.ToString();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            RefreshDataGridView();
-        }
+        
     }
 }

@@ -75,7 +75,7 @@ namespace Transacciones
             {
                 try
                 {
-                    // Insertar el cliente primero
+                    
                     string insertClientQuery = "INSERT INTO Clientes (Nombre, Apellido, Direccion) VALUES (@Nombre, @Apellido, @Direccion)";
                     MySqlCommand insertClientCmd = new MySqlCommand(insertClientQuery, connection, transaction);
                     insertClientCmd.Parameters.AddWithValue("@Nombre", textBox1.Text);
@@ -83,24 +83,27 @@ namespace Transacciones
                     insertClientCmd.Parameters.AddWithValue("@Direccion", textBox3.Text);
                     insertClientCmd.ExecuteNonQuery();
 
-                    // Obtener el id del cliente insertado
                     int clientId = (int)insertClientCmd.LastInsertedId;
 
-                    // Insertar el teléfono
+                  
                     string insertPhoneQuery = "INSERT INTO Telefonos (Telefono, Clientes_id) VALUES (@Telefono, @Clientes_id)";
                     MySqlCommand insertPhoneCmd = new MySqlCommand(insertPhoneQuery, connection, transaction);
                     insertPhoneCmd.Parameters.AddWithValue("@Telefono", textBox4.Text);
                     insertPhoneCmd.Parameters.AddWithValue("@Clientes_id", clientId);
                     insertPhoneCmd.ExecuteNonQuery();
-                    NotifyDataChanged();
+                  
                     MessageBox.Show("Datos guardados correctamente.");
                     ClearTextBoxes();
                     RefreshDataGridView();
-                   
+                    if (GetIsolationLevel() != IsolationLevel.Serializable)
+                    {
+                        NotifyDataChanged();
+                    }
+
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error al guardar datos: " + ex.Message);
+                    MessageBox.Show("Error al guardar datos, transacción activa: " + ex.Message);
                 }
             }
             else
@@ -108,7 +111,7 @@ namespace Transacciones
                 MessageBox.Show("Inicie una transacción primero.");
             }
         }
-
+      
         private void transaccionn_Click(object sender, EventArgs e)
         {
             try
@@ -235,7 +238,7 @@ namespace Transacciones
                 textBox1.Text = row.Cells["Nombre"].Value.ToString();
                 textBox2.Text = row.Cells["Apellido"].Value.ToString();
                 textBox3.Text = row.Cells["Direccion"].Value.ToString();
-                textBox1.Tag = row.Cells["id"].Value.ToString(); // Guardar el ID del cliente en el Tag del TextBox
+                textBox1.Tag = row.Cells["id"].Value.ToString();   
                 textBox1.Enabled = false;
                 textBox2.Enabled = false;
                 textBox3.Enabled = false;
@@ -280,20 +283,20 @@ namespace Transacciones
                 {
                     try
                     {
-                        // Obtener el ID del cliente del TextBox1.Tag
                         int clientId = int.Parse(textBox1.Tag.ToString());
-
-                        // Insertar el teléfono
                         string insertPhoneQuery = "INSERT INTO Telefonos (Telefono, Clientes_id) VALUES (@Telefono, @Clientes_id)";
                         MySqlCommand insertPhoneCmd = new MySqlCommand(insertPhoneQuery, connection, transaction);
                         insertPhoneCmd.Parameters.AddWithValue("@Telefono", textBox4.Text);
                         insertPhoneCmd.Parameters.AddWithValue("@Clientes_id", clientId);
                         insertPhoneCmd.ExecuteNonQuery();
-                        NotifyDataChanged();
                         MessageBox.Show("Teléfono agregado correctamente.");
                         textBox4.Clear();
                         RefreshDataGridView();
-                        
+                        if (GetIsolationLevel() != IsolationLevel.Serializable)
+                        {
+                            NotifyDataChanged();
+                        }
+
                     }
                     catch (Exception ex)
                     {
@@ -340,7 +343,7 @@ namespace Transacciones
                 case IsolationLevel.Serializable:
                     return "SERIALIZABLE";
                 default:
-                    return "REPEATABLE READ"; // Valor por defecto
+                    return "REPEATABLE READ"; 
             }
         }
 
